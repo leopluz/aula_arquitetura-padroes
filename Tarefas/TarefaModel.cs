@@ -5,20 +5,28 @@ using System.Text.Json;
 #pragma warning disable CS8604 // Possible null reference argument.
 public class TarefaModel
 {
-    private static List<Tarefa> tarefas = new List<Tarefa>();
+    private List<Tarefa> tarefas;
 
-    public void CriarTarefa(string tarefa)
+    public TarefaModel() {
+        tarefas = new List<Tarefa>();
+    }
+
+    public void CriarTarefa(string nome)
     {
         int novoId = gerarNovoId();
-        Tarefa newTask = new Tarefa(novoId ,tarefa);
-        tarefas.Add(newTask);
+        Tarefa novaTarefa = new Tarefa(novoId, nome);
+        tarefas.Add(novaTarefa);
+
         SalvarDados();
     }
 
     public void ExcluirTarefa(int id)
     {
+        //Exclui todas as tarefas que obedeçam a regra:
+        //Id da Tarefa é igual ao "id" que veio como parâmetro
+        //  no ExcluirTarefa
         tarefas.RemoveAll(t => t.id == id);
-
+        
         SalvarDados();
     }
 
@@ -40,16 +48,18 @@ public class TarefaModel
     }
 
     private void SalvarDados() {
+        //Limpa o arquivo
         File.WriteAllText("tarefas.txt", string.Empty);
 
+        //Carregando cada uma das Tarefas e colocando numa Array de String (formato JSON)
         Tarefa[] tarefasArr = tarefas.ToArray<Tarefa>();
         string[] linhas = new string[tarefasArr.Length];
         int i = 0;
         foreach (Tarefa tarefa in tarefasArr) {
             linhas[i++] = JsonSerializer.Serialize(tarefa);
-            // Console.WriteLine(jsonString);
         }
 
+        //Escreve no arquivo as Tarefas (em formato JSON)
         File.WriteAllLines("tarefas.txt", linhas);
     }
 
