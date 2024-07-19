@@ -7,10 +7,12 @@
     static void Main(string[] args)
     {
         _model = new TarefaModel();
-        _controller = new TarefaController(_model);
+        _view = new TarefaView();
+        _controller = new TarefaController(_model, _view);
 
-        _view = new TarefaView(_controller);
-
-        _view.ExecutarInterfaceConsole();
+        while (true)
+        {
+            _controller.TelaInicial();
+        }
     }
 }

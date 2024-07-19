@@ -1,9 +1,8 @@
 
 using System.Text.Json;
-using System.Text.Json.Serialization;
-
 
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8604 // Possible null reference argument.
 public class TarefaModel
 {
     private static List<Tarefa> tarefas = new List<Tarefa>();
@@ -14,17 +13,6 @@ public class TarefaModel
         Tarefa newTask = new Tarefa(novoId ,tarefa);
         tarefas.Add(newTask);
         SalvarDados();
-    }
-
-    private int gerarNovoId() {
-        Tarefa lastTask = tarefas.LastOrDefault();
-
-        int novoId = 1;
-        if (lastTask != null) {
-            novoId = lastTask.id + 1;
-        }
-
-        return novoId;
     }
 
     public void ExcluirTarefa(int id)
@@ -38,6 +26,17 @@ public class TarefaModel
     {
         CarregarDados();
         return tarefas;
+    }
+
+    private int gerarNovoId() {
+        Tarefa lastTask = tarefas.LastOrDefault();
+
+        int novoId = 1;
+        if (lastTask != null) {
+            novoId = lastTask.id + 1;
+        }
+
+        return novoId;
     }
 
     private void SalvarDados() {

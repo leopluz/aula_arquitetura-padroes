@@ -1,25 +1,10 @@
 
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-#pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8603 // Possible null reference return.
 public class TarefaView
 {
-    private TarefaController _controller;
 
-    public TarefaView(TarefaController controller)
-    {
-        _controller = controller;
-    }
-
-    public void ExecutarInterfaceConsole()
-    {
-
-        while (true)
-        {
-            MostrarMenu();
-        }
-    }
-
-    public void MostrarMenu()
+    public string MenuSelecao()
     {
         Console.WriteLine("----------MENU----------");
         Console.WriteLine("| 1. Criar Tarefa      |");
@@ -29,44 +14,26 @@ public class TarefaView
         Console.WriteLine("------------------------");
         string escolha = Console.ReadLine();
 
-        if (escolha == "1")
-        {
-            CadastrarTarefa();
-        }
-        else if (escolha == "2")
-        {
-            ExcluirTarefa();
-        }
-        else if (escolha == "3")
-        {
-            ListarTarefas();
-        }
-        else if (escolha == "4")
-        {
-            Environment.Exit(0);
-        }
+        return escolha;
     }
 
-    public void CadastrarTarefa()
+    public string SolicitarNomeNovaTarefa()
     {
         Console.WriteLine("Digite o nome da sua tarefa:");
         string nome = Console.ReadLine();
 
-        _controller.CriarTarefa(nome);
+        return nome;
     }
 
-    public void ExcluirTarefa()
+    public string SolicitarIdExcluirTarefa()
     {
         Console.WriteLine("Digite o ID da Tarefa para excluir:");
-        string idStr = Console.ReadLine();
-        int id = Int32.Parse(idStr);
+        string id = Console.ReadLine();
 
-        _controller.ExcluirTarefa(id);
+        return id;
     }
-    public void ListarTarefas()
+    public void ListarTarefas(List<Tarefa> tarefas)
     {
-        List<Tarefa> tarefas = _controller.ListarTarefas();
-
         Console.WriteLine("----------LISTA DE TAREFAS----------");
         foreach (var tarefa in tarefas)
         {
