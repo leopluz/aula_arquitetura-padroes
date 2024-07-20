@@ -10,7 +10,8 @@ public class TarefaView
         Console.WriteLine("| 1. Criar Tarefa      |");
         Console.WriteLine("| 2. Excluir Tarefa    |");
         Console.WriteLine("| 3. Listar Tarefas    |");
-        Console.WriteLine("| 4. Sair              |");
+        Console.WriteLine("| 4. Finalizar Tarefa  |");
+        Console.WriteLine("| 5. Sair              |");
         Console.WriteLine("------------------------");
         string escolha = Console.ReadLine();
 
@@ -28,6 +29,14 @@ public class TarefaView
     public string SolicitarIdExcluirTarefa()
     {
         Console.WriteLine("Digite o ID da Tarefa para excluir:");
+        string id = Console.ReadLine();
+
+        return id;
+    }
+
+    public string SolicitarIdFinalizarTarefa()
+    {
+        Console.WriteLine("Digite o ID da Tarefa para ser finalizada:");
         string id = Console.ReadLine();
 
         return id;
