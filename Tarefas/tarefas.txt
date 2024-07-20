@@ -3,3 +3,4 @@
 {"id":4,"nome":"GHI","finalizada":true}
 {"id":5,"nome":"JKL","finalizada":false}
 {"id":6,"nome":"MNO","finalizada":false}
+{"id":7,"nome":"XYZ","finalizada":false}

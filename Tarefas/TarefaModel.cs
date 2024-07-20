@@ -1,15 +1,13 @@
-
-using System.Text.Json;
-
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-#pragma warning disable CS8604 // Possible null reference argument.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
 public class TarefaModel
 {
     private List<Tarefa> tarefas;
+    private TarefaPersistence tarefaPersistence;
 
     public TarefaModel() {
         this.tarefas = new List<Tarefa>();
+        this.tarefaPersistence = new TarefaPersistence();
     }
 
     public void CriarTarefa(string nome)
@@ -23,7 +21,7 @@ public class TarefaModel
         this.tarefas.Add(novaTarefa);
 
         // Realiza a lógica de negócios para persistir os dados
-        SalvarDados( this.tarefas );
+        this.tarefaPersistence.SalvarDados( this.tarefas );
     }
 
     public void ExcluirTarefa(int id)
@@ -34,7 +32,7 @@ public class TarefaModel
         this.tarefas.RemoveAll(t => t.id == id);
 
         // Realiza a lógica de negócios para persistir os dados
-        SalvarDados( this.tarefas );
+        this.tarefaPersistence.SalvarDados( this.tarefas );
     }
 
     public void FinalizarTarefa(int id)
@@ -46,13 +44,13 @@ public class TarefaModel
         tarefa.finalizada = true;
 
         // Realiza a lógica de negócios para persistir os dados
-        SalvarDados( this.tarefas );
+        this.tarefaPersistence.SalvarDados( this.tarefas );
     }
 
     public List<Tarefa> GetTarefas()
     {
         // Realiza a lógica de negócios de carregar os dados da persistência
-        this.tarefas = CarregarDados();
+        this.tarefas = this.tarefaPersistence.CarregarDados();
 
         return this.tarefas;
     }
@@ -70,34 +68,5 @@ public class TarefaModel
 
         return novoId;
     }
-
-    private void SalvarDados(List<Tarefa> tarefasParaSalvar) {
-        // Limpa o arquivo
-        File.WriteAllText("tarefas.txt", string.Empty);
-
-        // Carrega cada uma das Tarefas e coloca numa Array de String (formato JSON)
-        Tarefa[] tarefasArr = tarefasParaSalvar.ToArray<Tarefa>();
-        string[] linhas = new string[tarefasArr.Length];
-        int i = 0;
-        foreach (Tarefa tarefa in tarefasArr) {
-            linhas[i++] = JsonSerializer.Serialize(tarefa);
-        }
-
-        // Escreve no arquivo as Tarefas (em formato JSON)
-        File.WriteAllLines("tarefas.txt", linhas);
-    }
-
-    private List<Tarefa> CarregarDados() {
-        // Cria uma nova lista (vazia)
-        List<Tarefa> tarefasDoArquivo = new List<Tarefa>();
-
-        // Carrega os dados vindo do arquivos
-        string[] linhas = File.ReadAllLines("tarefas.txt");
-        foreach (string linhasLine in linhas) {
-            Tarefa tarefa = JsonSerializer.Deserialize<Tarefa>(linhasLine);
-            tarefasDoArquivo.Add(tarefa);
-        }
-
-        return tarefasDoArquivo;
-    }
+    
 }
