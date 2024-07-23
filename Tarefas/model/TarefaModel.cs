@@ -3,17 +3,17 @@
 public class TarefaModel
 {
     private List<Tarefa> tarefas;
-    private TarefaPersistence tarefaPersistence;
+    private PersistenceFacade persistenceFacade;
 
-    public TarefaModel() {
+    public TarefaModel(PersistenceFacade persistenceFacade) {
         this.tarefas = new List<Tarefa>();
-        this.tarefaPersistence = new TarefaPersistence();
+        this.persistenceFacade = persistenceFacade;
     }
 
     public void CriarTarefa(string nome)
     {
         // Gera um novo Id (em um método especializado para isso)
-        int novoId = gerarNovoId();
+        int novoId = this.persistenceFacade.gerarNovoId();
 
         // Cria uma nova Tarefa utilizando o Id gerado e o nome fornecido
         // E depois adiciona a nova Tarefa na lista de tarefas
@@ -21,7 +21,7 @@ public class TarefaModel
         this.tarefas.Add(novaTarefa);
 
         // Realiza a lógica de negócios para persistir os dados
-        this.tarefaPersistence.SalvarDados( this.tarefas );
+        this.persistenceFacade.SalvarDados( this.tarefas );
     }
 
     public void ExcluirTarefa(int id)
@@ -32,7 +32,7 @@ public class TarefaModel
         this.tarefas.RemoveAll(t => t.id == id);
 
         // Realiza a lógica de negócios para persistir os dados
-        this.tarefaPersistence.SalvarDados( this.tarefas );
+        this.persistenceFacade.SalvarDados( this.tarefas );
     }
 
     public void FinalizarTarefa(int id)
@@ -44,29 +44,15 @@ public class TarefaModel
         tarefa.finalizada = true;
 
         // Realiza a lógica de negócios para persistir os dados
-        this.tarefaPersistence.SalvarDados( this.tarefas );
+        this.persistenceFacade.SalvarDados( this.tarefas );
     }
 
     public List<Tarefa> GetTarefas()
     {
         // Realiza a lógica de negócios de carregar os dados da persistência
-        this.tarefas = this.tarefaPersistence.CarregarDados();
+        this.tarefas = this.persistenceFacade.CarregarDados();
 
         return this.tarefas;
-    }
-
-    private int gerarNovoId() {
-        // Carrega o último item da lista (ou null, se estiver vazia)
-        Tarefa ultimaTarefa = tarefas.LastOrDefault();
-
-        // Define o número 1, caso a lista esteja vazia ou então
-        // definirá o novo Id como sendo o do último elemento + 1
-        int novoId = 1;
-        if (ultimaTarefa != null) {
-            novoId = ultimaTarefa.id + 1;
-        }
-
-        return novoId;
     }
     
 }
